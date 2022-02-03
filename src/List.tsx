@@ -9,9 +9,6 @@ const List = () => {
     const [error, setError] = useState(null);
     const [page, setPage] = useState(0);
 
-    // "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty";
-    // `https://hacker-news.firebaseio.com/v0/item/${allItems[page]}.json?print=pretty`
-
     useEffect(() => {
         fetch(
             "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty"
