@@ -37,7 +37,7 @@ const ListItem = (id: number) => {
                     setError(error);
                 }
             );
-    }, [id]);
+    }, []);
 
     if (error) {
         return <div>Error: {error}</div>;
