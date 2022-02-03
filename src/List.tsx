@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-
-type item = {
-    id: number;
-};
+import type { item } from "./itemType";
+import ListItem from "./ListItem";
 
 const List = () => {
     const [allItems, setAllItems] = useState([]);
@@ -15,7 +13,9 @@ const List = () => {
     // `https://hacker-news.firebaseio.com/v0/item/${allItems[page]}.json?print=pretty`
 
     useEffect(() => {
-        fetch("http://localhost:8000/")
+        fetch(
+            "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty"
+        )
             .then((res) => res.json())
             .then(
                 (result) => {
@@ -29,19 +29,14 @@ const List = () => {
             );
     }, []);
 
-    useEffect(() => {
-        if (isLoaded) {
-            fetchItems();
-        }
-    }, [allItems]);
-
     const fetchItems = () => {
         if (isLoaded) {
-            console.log(fetchedItems.length);
             if (fetchedItems.length <= page * 10) {
                 const tmpItems = allItems.slice(page * 10, (page + 1) * 10);
                 tmpItems.forEach((element) => {
-                    fetch(`http://localhost:8000/${element}`)
+                    fetch(
+                        `https://hacker-news.firebaseio.com/v0/item/${element}.json?print=pretty`
+                    )
                         .then((res) => res.json())
                         .then(
                             (result) => {
@@ -59,6 +54,12 @@ const List = () => {
         }
     };
 
+    useEffect(() => {
+        if (isLoaded) {
+            fetchItems();
+        }
+    }, [allItems]);
+
     useEffect(fetchItems, [page]);
 
     const handlePageClick = (num: number) => {
@@ -67,29 +68,55 @@ const List = () => {
         }
     };
 
+    function renderItems() {
+        if (error) {
+            return <div>Error: {error}</div>;
+        } else if (!isLoaded) {
+            return <div>Is Loading...</div>;
+        } else {
+            return (
+                <div className="text-center text-gray-300">
+                    {fetchedItems
+                        .slice(page * 10, (page + 1) * 10)
+                        .map((element, key) => {
+                            return <ListItem key={key} data={element} />;
+                        })}
+                </div>
+            );
+        }
+    }
+
     return (
-        <div className="container mx-auto mt-10 p-5 bg-gray-800 shadow rounded-lg">
-            <div>
+        <div className="container mx-auto mt-10 p-5 bg-gray-800 shadow rounded max-w-4xl border-amber-600 border-2">
+            <div className="mb-5">
                 <button
                     onClick={() => handlePageClick(-1)}
-                    className="mx-2 p-2 bg-emerald-500 font-bold rounded hover:bg-emerald-900 shadow"
+                    className="p-2 bg-amber-600 font-bold rounded-l-md hover:bg-amber-900 shadow"
                 >
                     ←
                 </button>
                 <button
                     onClick={() => handlePageClick(1)}
-                    className="mx-2 p-2 bg-emerald-500 font-bold rounded hover:bg-emerald-900 shadow"
+                    className="p-2 bg-amber-600 font-bold rounded-r-md hover:bg-amber-900 shadow"
                 >
                     →
                 </button>
             </div>
-            <ul className="text-center text-white">
-                {fetchedItems
-                    .slice(page * 10, (page + 1) * 10)
-                    .map((element, key) => {
-                        return <li key={key}>{element.id}</li>;
-                    })}
-            </ul>
+            {renderItems()}
+            <div className="mt-5">
+                <button
+                    onClick={() => handlePageClick(-1)}
+                    className="p-2 bg-amber-600 font-bold rounded-l-md hover:bg-amber-900 shadow"
+                >
+                    ←
+                </button>
+                <button
+                    onClick={() => handlePageClick(1)}
+                    className="p-2 bg-amber-600 font-bold rounded-r-md hover:bg-amber-900 shadow"
+                >
+                    →
+                </button>
+            </div>
         </div>
     );
 };

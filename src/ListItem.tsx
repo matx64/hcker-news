@@ -1,57 +1,18 @@
-import React, { useEffect, useState } from "react";
+import moment from "moment";
 
-type item = {
-    title: string;
-    url: string;
-    score: number;
-    time: number;
-};
+const ListItem = (props: any) => {
+    const date = moment.unix(props.data.time).fromNow();
 
-const ListItem = (id: number) => {
-    const [data, setData] = useState<item>({
-        title: "",
-        url: "",
-        score: 0,
-        time: 0,
-    });
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        fetch(
-            `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
-        )
-            .then((res) => res.json())
-            .then(
-                (result) => {
-                    setIsLoaded(true);
-                    setData({
-                        title: result.title,
-                        url: result.url,
-                        score: result.score,
-                        time: result.time,
-                    });
-                },
-                (error) => {
-                    setIsLoaded(true);
-                    setError(error);
-                }
-            );
-    }, []);
-
-    if (error) {
-        return <div>Error: {error}</div>;
-    } else if (!isLoaded) {
-        return <div>Loading...</div>;
-    } else {
-        return (
-            <div>
-                <a href={data.url} className="font-bold">
-                    {data.title}
-                </a>
-            </div>
-        );
-    }
+    return (
+        <div className="my-3">
+            <a href={props.data.url} className="font-semibold">
+                {props.data.title}
+            </a>
+            <p className="font-thin text-sm text-violet-500">
+                {props.data.score} points ● {date}
+            </p>
+        </div>
+    );
 };
 
 export default ListItem;
