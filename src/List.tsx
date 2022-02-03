@@ -55,8 +55,10 @@ const List = () => {
         if (isLoaded) {
             fetchItems();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [allItems]);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(fetchItems, [page]);
 
     const handlePageClick = (num: number) => {
