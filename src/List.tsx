@@ -67,11 +67,11 @@ const List = () => {
         }
     };
 
-    function renderItems() {
+    const renderItems = () => {
         if (error) {
             return <div>Error: {error}</div>;
         } else if (!isLoaded) {
-            return <div>Is Loading...</div>;
+            return <div>Loading...</div>;
         } else {
             return (
                 <div className="text-center text-gray-300">
@@ -83,7 +83,7 @@ const List = () => {
                 </div>
             );
         }
-    }
+    };
 
     return (
         <div className="container mx-auto mt-10 p-5 bg-gray-800 shadow rounded max-w-4xl border-amber-600 border-2">
