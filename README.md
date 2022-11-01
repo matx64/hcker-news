@@ -1,10 +1,11 @@
-# hcker_news
+# 🗞️ hcker_news
 
 [Hacker News](https://news.ycombinator.com/news) top stories page with a better UI.
 
-Available at: https://hcker-news.netlify.app/
+👉 Available at: https://hcker-news.netlify.app
 
-## Tech
+
+### 🔨 Tech
 
 -   Hacker News API
 -   React
